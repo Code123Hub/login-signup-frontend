@@ -21,7 +21,7 @@ function App() {
 
           <Route exact path="/signup" element={<SignUp />} />
 
-          <Route exact path="/forgetpassword" element={<ForgotPassword />} />
+          <Route exact path="/forgotpassword" element={<ForgotPassword />} />
         </Routes>
       </Router>
     </>
