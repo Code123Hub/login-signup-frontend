@@ -1,6 +1,7 @@
 
 
 import React, { useState,useEffect } from "react";
+import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import "./SignUp.css";
@@ -25,6 +26,8 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useParams } from 'react-router-dom';
+import { useAuth } from '../AuthContext/Auth';
 
 function SignUp() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -37,6 +40,10 @@ function SignUp() {
   const [successMessage, setSuccessMessage] = useState("");
   // const [showSuccessMessage, setShowSuccessMessage] = useState(true);
 
+  const auth = useAuth();
+
+  
+  
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -229,12 +236,12 @@ function SignUp() {
                 style={{ marginRight: "8px" }}
               />
             </div>
-            <p
+            <Link to="/"
               className="div-p1"
               style={{ marginTop: "5px", marginBottom: "2px", color: "blue" }}
             >
               Already registered? LogIn
-            </p>
+            </Link>
           </Box>
         </CardContent>
       </Card>

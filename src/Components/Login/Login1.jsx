@@ -34,7 +34,8 @@ function Login1() {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [message, setMessage] = useState("")
-  
+  const [successMessage, setSuccessMessage] = useState("");
+
   useEffect(() => {
     // Load saved email and password from localStorage when component mounts
     const savedEmail = localStorage.getItem("savedEmail");
@@ -67,17 +68,24 @@ function Login1() {
       if (response.ok) {
         // Login successful, you can handle the success here
         console.log("Login successful");
+        setSuccessMessage("Login successfull.");
         if (rememberMe) {
           localStorage.setItem("savedEmail", email);
           localStorage.setItem("savedPassword", password);
         }
+        setEmail("");
+        setPassword("");
+        setMessage("");
+        setRememberMe(false);
 
       } else {
         // Login failed, log the error details
         console.error("Login failed", responseData);
+        setMessage(`Login Failed: ${responseData?.message || "An unknown error occurred."}`);
       }
     } catch (error) {
       console.error("Error during login:", error);
+      setMessage("An unexpected error has occurred.");
     }
   };
   
@@ -115,6 +123,8 @@ function Login1() {
             >
               WELCOME TO ANOVIP
             </Typography>
+            {message && <Typography variant="body1" color="error">{message}</Typography>}
+            {successMessage && <Typography variant="body2" style={{ color: 'green', textAlign:'center' }}>{successMessage}</Typography>}
             <FormControl sx={{ m: 1, width: "35ch" }} variant="standard">
               <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
               <Input

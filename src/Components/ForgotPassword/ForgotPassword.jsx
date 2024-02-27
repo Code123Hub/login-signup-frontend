@@ -2,7 +2,7 @@
 
 
 
-import React from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import "./ForgotPassword.css";
@@ -17,7 +17,43 @@ import {
   Button,
 } from "@mui/material";
 
+
+
 function ForgotPassword() {
+
+  const [email, setEmail] = useState("");
+  // const some = useParams();
+  //   console.log("oyeeee1",some)
+
+  // const { username } = useParams();
+
+  const handleSendLink=async () =>{
+    try {
+      const response = await fetch(
+        "https://login-signup-0dmg.onrender.com/verification/${userId}",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+          }),
+        }
+      )
+      const responseData = await response.json();
+      console.log(responseData);
+      if(response.ok){
+        console.log("link send successfully!");
+      }
+      else{
+        console.error("Not able to send link", responseData);
+
+      }
+    } catch (error) {
+      console.error("Error during sending link for verification", error);
+    }
+  }
  
   return (
     <div className="section-div">
@@ -49,15 +85,17 @@ function ForgotPassword() {
                 textAlign: "center",
               }}
             >
-              RESET PASSWORD
+             SEND RESET LINK
             </Typography>
-            <p className="div-p1">The verification email will be sent to the mailbox.Please Check it.</p>
+            <p className="div-p1">The verification link will be sent to the mailbox.Please Check it.</p>
             
             <FormControl sx={{ m: 1, width: "35ch" }} variant="standard">
               <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
               <Input
                 id="standard-adornment-email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton aria-label="envelop"></IconButton>
@@ -69,8 +107,9 @@ function ForgotPassword() {
               <Button
                 variant="contained"
                 sx={{ justifyContent: "center", m: 1, }}
+                onClick={handleSendLink}
               >
-                Reset Password
+                Send
               </Button>
             </div>
             
