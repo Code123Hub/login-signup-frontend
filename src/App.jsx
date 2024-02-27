@@ -7,6 +7,7 @@ import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
 import { HashRouter  as Router, Routes, Route} from "react-router-dom";
 import Verification from "./Components/Verfication.jsx";
 import CheckValid from "./Components/CheckValid.jsx";
+import ResetPassword from "./Components/ForgotPassword/ResetPassword.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route exact path="/signup" element={<SignUp />} />
 
           <Route exact path="/forgotpassword" element={<ForgotPassword />} />
+          <Route exact path="/reset-password" element={<ResetPassword />} />
 
           <Route path='/verification' element={<Verification/>}/>
           <Route path='/checkValid/:token' element={<CheckValid/>}/>
