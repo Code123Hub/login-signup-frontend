@@ -26,9 +26,11 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
+import { useAuth } from '../AuthContext/Auth';
 
 function Login1() {
+
+  const auth = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -67,7 +69,13 @@ function Login1() {
   
       if (response.ok) {
         // Login successful, you can handle the success here
-        console.log("Login successful");
+        console.log("Login successful", responseData);
+        // auth.saveAuthData({ token: token, emailId: email, userId: userId  });
+        const token = responseData.data.token;
+        const email = responseData.data.email;
+        const userId = responseData.data.userId;
+        auth.saveAuthData({ token: token, email: email, userId: userId });
+
         setSuccessMessage("Login successfull.");
         if (rememberMe) {
           localStorage.setItem("savedEmail", email);

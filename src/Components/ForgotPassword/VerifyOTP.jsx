@@ -2,6 +2,8 @@
 
 
 
+
+
 import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -16,28 +18,21 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import { useNavigate} from 'react-router';
-import { useParams } from 'react-router-dom';
-import { useAuth } from '../AuthContext/Auth';
+import { useNavigate, useParams} from 'react-router';
 
 
 
-function ForgotPassword() {
-
-  const navigate = useNavigate();
-  const { authData, saveAuthData } = useAuth();
-  const { userId } = useParams();
+function VerifyOTP() {
 
   const [email, setEmail] = useState("");
-  // const some = useParams();
-  //   console.log("oyeeee1",some)
+  const [otp, setOTP] = useState("");
+  const navigate = useNavigate();
+  const {userId} = useParams();
 
-  // const { username } = useParams();
-
-  const handleSendLink=async () =>{
+  const handleVerifyOtp=async () =>{
     try {
       const response = await fetch(
-        `https://login-signup-0dmg.onrender.com/verification/${userId}`,
+        "https://login-signup-0dmg.onrender.com/verifyOTP",
         {
           method: "POST",
           headers: {
@@ -45,22 +40,22 @@ function ForgotPassword() {
           },
           body: JSON.stringify({
             email: email,
+            otp: otp,
           }),
         }
       )
       const responseData = await response.json();
       console.log(responseData);
       if(response.ok){
-        console.log("link send successfully!");
-        // saveAuthData({ token: responseData.data.token, email: formData.data.email });
-        navigate(`/otp-verification/${userId}`);
+        console.log("otp verified successfully!");
+        navigate('/reset-password')
       }
       else{
-        console.error("Not able to send link", responseData);
+        console.error("Not able to verify otp", responseData);
 
       }
     } catch (error) {
-      console.error("Error during sending link for verification", error);
+      console.error("Error during verifying otp", error);
     }
   }
  
@@ -94,9 +89,9 @@ function ForgotPassword() {
                 textAlign: "center",
               }}
             >
-             VERIFY EMAIL
+             VERIFY OTP
             </Typography>
-            <p className="div-p1">The verification otp will be sent to the mailbox.Please Check it.</p>
+            <p className="div-p1">Please copy otp which is send to verified email and then you will be able to change your password.</p>
             
             <FormControl sx={{ m: 1, width: "35ch" }} variant="standard">
               <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
@@ -112,11 +107,25 @@ function ForgotPassword() {
                 }
               />
             </FormControl>
+            <FormControl sx={{ m: 1, width: "35ch" }} variant="standard">
+              <InputLabel htmlFor="standard-adornment-OTP">OTP</InputLabel>
+              <Input
+                id="standard-adornment-OTP"
+                type="text"
+                value={otp}
+                onChange={(e) => setOTP(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton aria-label="envelop"></IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
             <div className="div-button">
               <Button
                 variant="contained"
                 sx={{ justifyContent: "center", m: 1, }}
-                onClick={handleSendLink}
+                onClick={handleVerifyOtp}
               >
                 Submit
               </Button>
@@ -129,4 +138,4 @@ function ForgotPassword() {
   );
 }
 
-export default ForgotPassword;
+export default VerifyOTP;

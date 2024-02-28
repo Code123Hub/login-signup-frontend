@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import "./ForgotPassword.css";
+import { useNavigate} from 'react-router';
 import {
   Typography,
   Box,
@@ -22,13 +23,14 @@ import {
 
 function ResetPassword() {
 
+  const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleUpdate=async () =>{
     try {
       const response = await fetch(
-        "https://login-signup-0dmg.onrender.com/verifyOTP/${userId}",
+        "https://login-signup-0dmg.onrender.com/reset-password",
         {
           method: "POST",
           headers: {
@@ -36,20 +38,22 @@ function ResetPassword() {
           },
           body: JSON.stringify({
             email: email,
+            newPassword: newPassword,
           }),
         }
       )
       const responseData = await response.json();
       console.log(responseData);
       if(response.ok){
-        console.log("link send successfully!");
+        console.log("Password Changed successfully!");
+        navigate(`/`);
       }
       else{
-        console.error("Not able to send link", responseData);
+        console.error("Not able to Change Password", responseData);
 
       }
     } catch (error) {
-      console.error("Error during sending link for verification", error);
+      console.error("Error during Changing Password", error);
     }
   }
 
@@ -86,6 +90,23 @@ function ResetPassword() {
             >
              RESET PASSWORD
             </Typography>
+
+            <FormControl sx={{ m: 1, width: "35ch" }} variant="standard">
+              <InputLabel htmlFor="standard-adornment-password">Email</InputLabel>
+              <Input
+                id="standard-adornment-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton aria-label="envelop"></IconButton>
+                  </InputAdornment>
+                }
+              />
+
+
+            </FormControl>
             
             
             
@@ -106,7 +127,7 @@ function ResetPassword() {
 
 
             </FormControl>
-            <FormControl sx={{ m: 1, width: "35ch" }} variant="standard">
+            {/* <FormControl sx={{ m: 1, width: "35ch" }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">Confirm Password</InputLabel>
               <Input
                 id="standard-adornment-confirmPassword"
@@ -121,7 +142,7 @@ function ResetPassword() {
               />
 
               
-            </FormControl>
+            </FormControl> */}
             <div className="div-button">
               <Button
                 variant="contained"
